@@ -12,7 +12,7 @@
 # http://repository.cmu.edu/cgi/viewcontent.cgi?article=2768&context=compsci
 #
 
-. ./cmd.sh 
+#. ./cmd.sh 
 [ -f path.sh ] && . ./path.sh
 set -e
 
@@ -31,12 +31,16 @@ feats_nj=10
 train_nj=30
 decode_nj=5
 
+train_cmd="run.pl"
+decode_cmd="run.pl"
+
 echo ============================================================================
 echo "                Data & Lexicon & Language Preparation                     "
 echo ============================================================================
 
 #timit=/export/corpora5/LDC/LDC93S1/timit/TIMIT # @JHU
-timit=/mnt/matylda2/data/TIMIT/timit # @BUT
+#timit=/mnt/matylda2/data/TIMIT/timit # @BUT
+timit=/home/love/kaldi/data/timit/TIMIT
 
 local/timit_data_prep.sh $timit || exit 1
 

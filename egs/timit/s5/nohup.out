@@ -1,0 +1,23 @@
+steps/train_mono.sh --nj 4 --cmd  data/train.1k data/lang exp/mono
+steps/train_mono.sh: empty argument to --cmd option
+steps/train_mono.sh --nj 4 --cmd run.pl data/train.1k data/lang exp/mono
+cat: data/train.1k/utt2spk: No such file or directory
+Failed to open utt2spk file data/train.1k/utt2spk at utils/split_scp.pl line 85.
+steps/train_mono.sh --nj 4 --cmd run.pl data/train.1k data/lang exp/mono
+steps/train_mono.sh: Initializing monophone system.
+feat-to-dim 'ark,s,cs:apply-cmvn --utt2spk=ark:data/train.1k/split4/1/utt2spk scp:data/train.1k/split4/1/cmvn.scp scp:data/train.1k/split4/1/feats.scp ark:- | add-deltas ark:- ark:- |' 
+
+Reads an archive of features.  If second argument is wxfilename, writes
+the feature dimension of the first feature file; if second argument is
+wspecifier, writes an archive of the feature dimension, indexed by utterance
+id.
+Usage: feat-to-dim [options] <feat-rspecifier> (<dim-wspecifier>|<dim-wxfilename>)
+e.g.: feat-to-dim scp:feats.scp -
+
+Standard options:
+  --config                    : Configuration file to read (this option may be repeated) (string, default = "")
+  --help                      : Print out usage message (bool, default = false)
+  --print-args                : Print the command line arguments (to stderr) (bool, default = true)
+  --verbose                   : Verbose level (higher->more logging) (int, default = 0)
+
+error getting feature dimension

@@ -26,7 +26,7 @@ elif [[ $(hostname -f) == *.fit.vutbr.cz ]]; then
   export cuda_cmd="queue.pl -q long.q@pcspeech-gpu,long.q@dellgpu1,long.q@pcgpu*,long.q@supergpu1 -l gpu=1" 
 else
   echo "$0: you need to define options for your cluster."
-  exit 1;
+  #exit 1;
 fi
 
 #c) run locally...

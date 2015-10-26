@@ -42,8 +42,10 @@ echo ===========================================================================
 #timit=/mnt/matylda2/data/TIMIT/timit # @BUT
 timit=/home/love/kaldi/data/timit/TIMIT
 
+# this script organizes the metadata of the below data.
 local/timit_data_prep.sh $timit || exit 1
 
+#gets the phone to word mapping from training corpus.
 local/timit_prepare_dict.sh
 
 # Caution below: we remove optional silence by setting "--sil-prob 0.0",
@@ -51,6 +53,7 @@ local/timit_prepare_dict.sh
 utils/prepare_lang.sh --sil-prob 0.0 --position-dependent-phones false --num-sil-states 3 \
  data/local/dict "sil" data/local/lang_tmp data/lang
 
+# simple data rearrangement within directories
 local/timit_format_data.sh
 
 echo ============================================================================

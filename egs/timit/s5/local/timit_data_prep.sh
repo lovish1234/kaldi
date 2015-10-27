@@ -47,7 +47,7 @@ if [ -d $*/TRAIN ]; then
 fi
 
 tmpdir=$(mktemp -d /tmp/kaldi.XXXX);
-trap 'rm -rf "$tmpdir"' EXIT
+#trap 'rm -rf "$tmpdir"' EXIT
 
 # Get the list of speakers. The list of speakers in the 24-speaker core test 
 # set and the 50-speaker development set must be supplied to the script. All
@@ -63,7 +63,9 @@ else
 fi
 
 cd $dir
+
 for x in train dev test; do
+ 
   # First, find the list of audio files (use only si & sx utterances).
   # Note: train & test sets are under different directories, but doing find on 
   # both and grepping for the speakers will work correctly.
@@ -98,7 +100,8 @@ for x in train dev test; do
   awk '{printf("%s '$sph2pipe' -f wav %s |\n", $1, $2);}' < ${x}_sph.scp > ${x}_wav.scp
 
   # Make the utt2spk and spk2utt files.
-  cut -f1 -d'_'  $x.uttids | paste -d' ' $x.uttids - > $x.utt2spk 
+  cut -f1 -d'_'  $x.uttids | paste -d' ' $x.uttids - > $x.utt2spk
+  echo $x.spk2utt 
   cat $x.utt2spk | $utils/utt2spk_to_spk2utt.pl > $x.spk2utt || exit 1;
 
   # Prepare gender mapping

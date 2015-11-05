@@ -55,6 +55,7 @@ fi
 
 tmpdir=$(mktemp -d /tmp/kaldi.XXXX);
 #mkdir -p $*$train_blank $*$test_blank
+#trap 'rm -rf "$tmpdir"' EXIT
 
 
 
@@ -63,12 +64,12 @@ tmpdir=$(mktemp -d /tmp/kaldi.XXXX);
 # set and the 50-speaker development set must be supplied to the script. All
 # speakers in the 'train' directory are used for training.
 if $uppercased; then
-#  tr '[:lower:]' '[:upper:]' < $conf/dev_spk.list > $tmpdir/dev_spk
-#  tr '[:lower:]' '[:upper:]' < $conf/test_spk.list > $tmpdir/test_spk
+  tr '[:lower:]' '[:upper:]' < $conf/dev_spk.list > $tmpdir/dev_spk
+  tr '[:lower:]' '[:upper:]' < $conf/test_spk.list > $tmpdir/test_spk
   ls -d "$*"/TRAIN/DR*/* | sed -e "s:^.*/::" > $tmpdir/train_spk
 else
-#  tr '[:upper:]' '[:lower:]' < $conf/dev_spk.list > $tmpdir/dev_spk
-#  tr '[:upper:]' '[:lower:]' < $conf/test_spk.list > $tmpdir/test_spk
+  tr '[:upper:]' '[:lower:]' < $conf/dev_spk.list > $tmpdir/dev_spk
+  tr '[:upper:]' '[:lower:]' < $conf/test_spk.list > $tmpdir/test_spk
   ls -d "$*"/train/dr*/* | sed -e "s:^.*/::" > $tmpdir/train_spk
 fi
 
@@ -77,13 +78,13 @@ fi
 cd $dir
 
 
-for x in train; do
+for x in train dev test; do
 
 
   # First, find the list of audio files (use only si & sx utterances).
   # Note: train & test sets are under different directories, but doing find on 
   # both and grepping for the speakers will work correctly.
-  find $*/$train_dir -iname '*.WAV' \
+  find $*/{$train_dir,$test_dir} -iname '*.WAV' \
     | grep -f $tmpdir/${x}_spk > ${x}_sph.flist
 
   sed -e 's:.*/\(.*\)/\(.*\).WAV$:\1_\2:i' ${x}_sph.flist \
@@ -98,7 +99,7 @@ for x in train; do
   # Get the transcripts: each line of the output contains an utterance 
   # ID followed by the transcript.
     
-	find $*/$train_dir  -iname '*.PHN' | grep -f $tmpdir/${x}_spk > $tmpdir/${x}_phn.flist
+	find $*/{$train_dir,$test_dir}  -iname '*.PHN' | grep -f $tmpdir/${x}_spk > $tmpdir/${x}_phn.flist
 
     sed -e 's:.*/\(.*\)/\(.*\).PHN$:\1_\2:i' $tmpdir/${x}_phn.flist > $tmpdir/${x}_phn.uttids
  

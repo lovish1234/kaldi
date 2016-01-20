@@ -65,7 +65,6 @@ fi
 cd $dir
 
 for x in train dev test; do
- 
   # First, find the list of audio files (use only si & sx utterances).
   # Note: train & test sets are under different directories, but doing find on 
   # both and grepping for the speakers will work correctly.

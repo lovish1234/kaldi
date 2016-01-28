@@ -15,7 +15,7 @@ num_iters=40    # Number of iterations of training
 max_iter_inc=30 # Last iter to increase #Gauss on.
 totgauss=1000 # Target #Gaussians.  
 careful=false
-boost_silence=1.0 # Factor by which to boost silence likelihoods in alignment
+boost_silence=10.0 # Factor by which to boost silence likelihoods in alignment
 realign_iters="1 2 3 4 5 6 7 8 9 10 12 14 16 18 20 23 26 29 32 35 38";
 config= # name of config file.
 stage=-4
@@ -111,7 +111,7 @@ while [ $x -lt $num_iters ]; do
   if [ $stage -le $x ]; then
     if echo $realign_iters | grep -w $x >/dev/null; then
       echo "$0: Aligning data"
-      mdl="gmm-boost-silence --boost=$boost_silence `cat $lang/phones/optional_silence.csl` $dir/$x.mdl - |"
+      mdl="gmm-boost-silence --boost=$boost_silence 1:2 $dir/$x.mdl - |"
       $cmd JOB=1:$nj $dir/log/align.$x.JOB.log \
         gmm-align-compiled $scale_opts --beam=$beam --retry-beam=$[$beam*4] --careful=$careful "$mdl" \
         "ark:gunzip -c $dir/fsts.JOB.gz|" "$feats" "ark,t:|gzip -c >$dir/ali.JOB.gz" \

@@ -13,12 +13,10 @@
 # (this is compiled from this repository using Doxygen,
 # the source for this part is in src/doc/graph_recipe_test.dox)
 
-
-N=3
-P=1
+N=1
+P=0
 tscale=1.0
 loopscale=0.1
-
 reverse=false
 
 for x in `seq 5`; do 
